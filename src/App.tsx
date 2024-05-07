@@ -8,11 +8,20 @@ import {Route} from "react-router-dom";
 import News from "./components/News/News";
 import Music from "./components/Music/Music";
 import Settings from "./components/Settings/Settings";
-import {addMessage, AppPropsType} from "./redux/state";
+import {addMessage, addPost, AppPropsType, PostType} from "./redux/state";
 
+type ProfilePagePropsType = {
+    state: AppPropsType['state']['profilePage'];
+    addPost: (postMessage: string) => void;
+    posts: Array<PostType>;
+}
 
-
-const App = ( state: AppPropsType) => {
+const App = (props: AppPropsType) => {
+    const profilePageProps: ProfilePagePropsType = {
+        state: props.state.profilePage,
+        addPost: addPost,
+        posts: props.state.profilePage.posts
+    };
 
     return (
         <div className='app-wrapper'>
@@ -21,10 +30,10 @@ const App = ( state: AppPropsType) => {
             <div className="app-wrapper-content">
                 <Route
                     path={"/dialogs"}
-                    render={() => <Dialogs state={state.state.dialogsPage} addMessage={addMessage} />}/>
+                    render={() => <Dialogs state={props.state.dialogsPage} addMessage={addMessage} />}/>
                 <Route
                     path={"/profile"}
-                    render={() => <Profile state={state.state} addPost={state.addPost}/>}/>
+                    render={() => <Profile {...profilePageProps} />}/>
                 <Route
                     path={"/news"}
                     render={() => <News/>}/>
@@ -34,8 +43,12 @@ const App = ( state: AppPropsType) => {
                 <Route
                     path={"/settings"}
                     render={() => <Settings/>}/>
+                <Route
+                    path={"/error"}
+                    render={() => <div>404 NOT FOUND</div>}/>
             </div>
         </div>
     );
 }
+
 export default App;

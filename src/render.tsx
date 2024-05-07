@@ -6,8 +6,6 @@ import {BrowserRouter} from "react-router-dom";
 import {addPost, RootStateType} from "./redux/state";
 
 
-
-
 export let rerenderEntireTree = (state: RootStateType)=>{
     ReactDOM.render(
         <BrowserRouter>
